@@ -1,0 +1,20 @@
+MECEE 6616 Project 3 Report
+Jobin Binoy George - jb4512
+
+Data Collection Policy:
+
+Various methods of data collection was tried out to obtain the optimum results. Initially, a linearly spaced vector of a 1000 values between -1.5 and 1.5 was used for the set of torques to train on. The values were then passed onto the arm_dynamics_teacher's advance function and the next state was recorded accordingly, This process was done for 5 seconds as the initial thought was anything over the time limit would be redundant. This dataset produced a best test loss 3e-4 which was able to get a total of 12 points missing out on the edge case torques. Therefore, the dataset was then modified to include 680 values between -1.7 and 1.7 linearly spaced at 0.005 to make sure the set included the exact values being tested. Moreover, this time the amount of time for each torque to train was increased to 9 seconds. This data collection policy proved to work a lot better for the final results.
+
+Network Architecture:
+
+The model was kept simple with only one fully connected layer between the input and output layers. When deeper networks were tried on a subet of the entire dataset and compared with a shallow network, the validation loss was lower in the shallow network. Similarly, the number of layers was also tested to find the ideal width of the network and a wider initial layer that gets narrower towards the output layer seemed optimal. ReLU activation functions were used for the input layer and the middle layer a monotonic gradient seemed appropriate for this application. Different optimizers were tried out namely SGD, SGD with momentum, ADAgrad and Adam. All the optimizers except Adam started off with a very high test loss so the number of epochs needed to reach the required loss was too high requiring almost a day of training. Adam, however, started off with a very low test loss and needed only a couple of hours of training to meet the required test loss. The learning rate was set to 0.001 so that no big jumps were made when trying to find the minima. The number of epochs was set to 950 just to ensure the best possile loss is achieved. Finally, the test and train data were batched up (128 for train and 256 for test) to speed up the computation process. The train dataset was shuffled to decrease of the model relying on the order.
+
+
+Dynamics.pth Metadata:
+
+The lowest test loss achieved was 1.6e-7 which worked well with most tests. The corresponding train loss was around 8e-9. The best model was obtained at the 916th epoch. 
+
+
+Extra Comments:
+
+Although the model submitted was obtained at the 916th epoch, there were plenty of epochs starting from the 434th epoch that yielded test lossed of 2.5e-7 and less. These models also performed well and achieved full scores for all the tests. However, the model was let to continue training to achieve a sub 2e-7 loss to cover all grounds and not have to train again in case the above mentioned models failed on any of the test cases. 
